@@ -1,175 +1,72 @@
+<!doctype html>
 <html>
-<head>
-	<!-- Head (banging?) -->
-	<title>triangulr.js</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Triangulr by maxwellito</title>
 
-	<!-- Le script -->
-	<script src="triangulr.js"></script>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Triangulr</h1>
+        <p class="header">JavaScript class to generate maps of triangles</p>
 
-	<!-- Le style -->
-	<style type="text/css">
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/maxwellito/triangulr/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/maxwellito/triangulr/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/maxwellito/triangulr">View On GitHub</a></li>
+        </ul>
 
-		/* Base style */
-		body {
-			margin: 0 0 40px;
-			font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-			font-weight: 100;
-			font-size: 24px;
-			color: #444;
-			background-color: #F9F9F9;
-		}
-		small {
-			font-weight: 100;
-		}
-		p {
-			font-size: 1em;
-		}
-		dl dt {
-			font-weight: bold;
-		}
-		dl dd {
-			margin-bottom: 14px;
-		}
-		#head {
-			height: 500px;
-		}
-		#content {
-			margin: auto;
-			max-width: 960px;
-			padding: 0 20px;
-		}
-		.smaller {
-			margin: 4px 0;
-			font-size: 0.75em;
-		}
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/maxwellito">maxwellito</a></p>
+
+
+      </header>
+      <section>
+        <h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+
+<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+
+<pre><code>$ cd your_repo_root/repo_name
+$ git fetch origin
+$ git checkout gh-pages
+</code></pre>
+
+<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+
+<h3>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+
+<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+
+<h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+
+<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+
+<h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+
+<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
 		
-		/* Trial styling */
-		#trial {
-			position: relative;
-			overflow: hidden;
-			margin-bottom: 14px;
-			border-radius: 10px;
-		}
-		#trial-editor, .code {
-			width: 100%;
-			margin: 0; padding: 10px;
-			border: none;
-			background-color: #eee;
-			font-size: 0.6125em;
-			font-family: monospace;
-			box-sizing: border-box;
-		}
-		#trial-button {
-			position: absolute;
-			top: 10px; right: 10px;
-			margin: 0; padding: 8px;
-			border: none; border-radius: 6px;
-			background-color: #444;
-			font-size: 16px; font-weight: bold;
-			color: #f9f9f9;
-		}
-		#trial-output {
-			height: 300px;
-		}
-	</style>
-</head>
-<body>
-
-	<!-- SVG to display -->
-	<div id="head"></div>
-	
-	<div id="content">
-		<h1>triangulr <small>a little JavaScript class</small></h1>
-		<p>Who doesn't like triangles? Nobody. Especially hipsters ;-)</p>
-		<p>After many evening trying to build nice map of trandom triangles, I realised JavaScript could help me. Nowadays, this pattern is a kind of classic, very popular and used everywhere, but long to make. So I built this little class to make things easier.</p>
-
-		<h2>What is that?</h2>
-		<p>triangulr is a little JavaScript class to build triangles walls. Completely random. In SVG: ready for HTML or Illustrator use. It give you a bit of flexibility to generate what you need: dimension, triangle size, ratio of mess and color</p>
-		
-		<h2>How to use it?</h2>
-		<p>This is pure JavaScript, no jQuery required or other libraries. Only the simple triangulr.js in your page and you're ready to go.<br>Here is an example:</p>
-		<p class="code">
-			var mySVG = new Triangulr (600, 500, 60, 0);<br>
-			document.getElementById('myDiv').appendChild(mySVG);
-		</p>
-		<p>Triangulr constructor needs these attributes:</p>
-		
-		<dl>
-			<dt>width <small>integer</small></dt>
-			<dd>width of the SVG to generate<br>use them like pixels</dd>
-			
-			<dt>height <small>integer</small></dt>
-			<dd>height of the SVG to generate<br>use them like pixels</dd>
-			
-			<dt>triangleHeight <small>integer</small></dt>
-			<dd>original triangle height<br>like before, use pixels</dd>
-			
-			<dt>pointArea <small>integer</small></dt>
-			<dd>area to place random points<br>this value is quite tricky to explain, it's the level of structure randomness (the value is relative to the triangle height)</dd>
-			
-			<dt>color <small>function (optional)</small></dt>
-			<dd>function to generate a color for each triangle<br>an object will be passed as parameter with information about the current triangle
-				<p class="smaller">
-					<strong>counter</strong> triangle number<br>
-					<strong>x</strong> column index<br>
-					<strong>y</strong> line index<br>
-					<strong>lines</strong> number of lines in the SVG<br>
-					<strong>cols</strong> number of columns in the SVG<br>
-					<strong>points</strong> array of triangle points
-				</p>
-			</dd>
-		</dl>
-
-		<h2>How it works?</h2>
-		<p>The engine is quite simple to understand, even if at the start, it looks confusing to build this random triangles.<br>To begin, we use the value given to the constructor to create a regular pattern with proper equilateral triangles. To do that, the script start by generate lines of dots. Then a second pass use these points to generate triangles, and also the color function to generate the color code.<br>Then the last pass use the data to render it in a SVG DOM object.</p>
-
-		<h2>Test it</h2>
-		<p>Here is the basic code. Break it, test it.<br>Yes, the stuff below is a little editor, don't forget to press 'update'.</p>
-		<div id="trial">
-			<textarea id="trial-editor" rows="8">var colorGenerator = function (path) {
-  var random = 32;
-  var ratio = (path.x * path.y) / (path.cols * path.lines);
-  var code = Math.floor(255 - (ratio * (255-random)) - Math.random()*random).toString(16);
-  return '#'+code+code+code;
-};
-svg = new Triangulr (960, 400, 80, 40, colorGenerator);</textarea>
-			<button id="trial-button">Update</button>
-			<div id="trial-output"></div>
-		</div>
-		
-	</div>
-
-	<!-- Le main script -->
-	<script type="text/javascript">
-		// Header code
-		var headerSVG;
-		var headerContainer = document.getElementById('head');
-		var render = function(triangleId, lineId, parite, points) {
-			return triangleId % 2 == 1 ? '#070707' : Triangulr.prototype.generateGold();
-		}
-		var renderHeader = function() {
-			if (!!headerSVG) {
-				headerSVG.remove();
-			}
-			headerSVG = new Triangulr (window.innerWidth, 400, 100, 50);
-			headerContainer.appendChild(headerSVG);
-		}
-		window.onresize = renderHeader;
-		renderHeader();
-
-		// Trial code
-		var svg;
-		var output = document.getElementById('trial-output');
-		var updatr = document.getElementById('trial-button');
-		var renderTrial = function () {
-			if (!!svg) {
-				svg.remove();
-			}
-			eval(document.getElementById('trial-editor').value);
-			output.appendChild(svg);
-		};
-		updatr.addEventListener('click', renderTrial);
-		renderTrial();
-	</script>
-</body>
+  </body>
 </html>
