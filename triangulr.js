@@ -1,34 +1,40 @@
 'use strict';
 
 /**
- * Polygonr class
+ * Triangulr class
  * instructions will follow, in an other commit, it's late now
+ * 
+ * @param	int							width						Triangle height
+ * @param	int							height					Triangle height
+ * @param	int							lineHeight			Triangle height
+ * @param	int							pointArea				Area to place random point
+ * @param	function				colorFunction		Function to generate triangle color
  */
-function Polygonr (svgTag, lineHeight, pointArea) {
+function Triangulr (width, height, lineHeight, pointArea, renderingFunction) {
 								
 	// Tests
-	if (!svgTag || typeof svgTag !== 'object' || svgTag.tagName !== 'svg') {
-		throw 'Polygonr: svgTag must be a svg tag object';
+	if (typeof width !== 'number' || width <= 0) {
+		throw 'Triangulr: width must be positive';
 	}
-	if (svgTag.width.baseVal.value <= 0) {
-		throw 'Polygonr: svg width must be positive';
+	if (typeof height !== 'number' || height <= 0) {
+		throw 'Triangulr: height must be positive';
 	}
-	if (svgTag.height.baseVal.value <= 0) {
-		throw 'Polygonr: svg height must be positive';
+	if (typeof lineHeight !== 'number' || lineHeight <= 0) {
+		throw 'Triangulr: lineHeight must be set and be positive number';
 	}
-	if (!lineHeight || typeof lineHeight !== 'number' || lineHeight <= 0) {
-		throw 'Polygonr: lineHeight must be positive number';
+	if (!!pointArea && typeof pointArea !== 'number' || pointArea < 0) {
+		throw 'Triangulr: pointArea must be set and be a positive number';
 	}
-	if (!pointArea || typeof pointArea !== 'number' || pointArea <= 0) {
-		throw 'Polygonr: pointArea must be positive number';
+	if (!!renderingFunction && typeof renderingFunction !== 'function') {
+		throw 'Triangulr: renderingFunction must be a function';
 	}
 
 	// Save input
-	this.svgTag = svgTag;
-	this.mapWidth = svgTag.width.baseVal.value;
-	this.mapHeight = svgTag.height.baseVal.value;
+	this.mapWidth = width;
+	this.mapHeight = height;
 	this.lineHeight = lineHeight;
-	this.pointArea = pointArea;
+	this.pointArea = !!pointArea ? pointArea : 0;
+	this.colorRendering = !!renderingFunction ? renderingFunction : this.generateColor;
 
 	this.triangleLine = Math.sqrt(Math.pow(lineHeight/2, 2) + Math.pow(lineHeight, 2));
 	this.originX = - this.triangleLine;
@@ -37,10 +43,15 @@ function Polygonr (svgTag, lineHeight, pointArea) {
 	
 	this.lineMapping();
 	this.createTriangles();
-	this.insertDom();
+	return this.generateDom();
 }
 
-Polygonr.prototype.lineMapping = function () {
+/**
+ * lineMapping
+ * generate this.lines from the contructor info
+ * 
+ */
+Triangulr.prototype.lineMapping = function () {
 	
 	var x, y, line;
 	var lineX = Math.ceil(this.mapWidth/this.triangleLine) + 4;
@@ -60,9 +71,16 @@ Polygonr.prototype.lineMapping = function () {
 	}
 };
 
-Polygonr.prototype.createTriangles = function () {
+/**
+ * createTriangles
+ * use points form this.lines to generate triangles
+ * and put them into this.exportData
+ * 
+ */
+Triangulr.prototype.createTriangles = function () {
 	
-	var x, parite, lineA, lineB, aIndex, bIndex, points, poly;
+	var x, parite, lineA, lineB, aIndex, bIndex, points, poly, pointsList;
+	var counter = 0;
 	var lineParite = true;
 	this.exportData = [];
 
@@ -87,23 +105,87 @@ Polygonr.prototype.createTriangles = function () {
 			parite = !parite;
 
 			// Save the triangle
+			pointsList = [
+				points[0],
+				points[1],
+				points[2]
+			];
 			this.exportData.push({
 				style: {
-					fill: this.generateColor()
+					fill: this.colorRendering({
+						counter: counter,
+						x: aIndex + bIndex - 1,
+						y: x,
+						lines: this.lines.length,
+						cols: (lineA.length - 2) * 2,
+						points: pointsList
+					})
 				},
-				points: [
-					points[0],
-					points[1],
-					points[2]
-				]
+				points: pointsList
 			});
+			counter++;
 		} while (aIndex != lineA.length-1 && bIndex != lineA.length-1);
 
 		lineParite = !lineParite;
 	}
 };
 
-Polygonr.prototype.generateGold = function () {
+/**
+ * generateDom
+ * generate the SVG object from exportData content
+ * 
+ * @return {[object]} Svg DOM object
+ */
+Triangulr.prototype.generateDom = function () {
+	var i, j, points, style, polygon;
+	var svgTag = document.createElementNS('http://www.w3.org/2000/svg','svg');
+	var output = '';
+
+	svgTag.setAttribute('version', '1.1');
+
+	for(i in this.exportData) {
+		polygon = document.createElementNS('http://www.w3.org/2000/svg','path');
+
+		points  = 'M'+this.exportData[i].points[0].x+' '+this.exportData[i].points[0].y+' ';
+		points += 'L'+this.exportData[i].points[1].x+' '+this.exportData[i].points[1].y+' ';
+		points += 'L'+this.exportData[i].points[2].x+' '+this.exportData[i].points[2].y+' Z';
+		polygon.setAttribute('d', points);
+		polygon.setAttribute('fill', this.exportData[i].style.fill);
+		polygon.setAttribute('shape-rendering', 'geometricPrecision');
+
+		svgTag.appendChild(polygon);
+	}
+	return svgTag;
+};
+
+
+// Color generators
+///////////////////////////////////////////////////////////
+
+/**
+ * generateColor
+ * default color generator when no function is
+ * given to the constructor
+ * it generate dark grey colors
+ * 
+ * @param  {[object]} path Info object relative to current triangle 
+ * @return {[string]}      Color generated
+ */
+Triangulr.prototype.generateColor = function (path) {
+	var code = Math.floor(Math.random()*5).toString(16);
+	code += Math.floor(Math.random()*16).toString(16);
+	return '#'+code+code+code;
+};
+
+/**
+ * generateGold
+ * color generator for gold color (from black to white)
+ * this function is not use by default
+ * 
+ * @param  {[object]} path Info object relative to current triangle 
+ * @return {[string]}      Color generated
+ */
+Triangulr.prototype.generateGold = function () {
 	var goldColors = [255, 186, 0];
 	var ratio = Math.random() * 2;
 	var generated = 0;
@@ -117,28 +199,4 @@ Polygonr.prototype.generateGold = function () {
 	}
 	generated = generated.toString(16);
 	return generated.length == 5 ? '#0' + generated : '#' + generated;
-};
-
-Polygonr.prototype.generateColor = function (x) {
-	var keys = ['0', '1', '2', '3', '4'];
-	var code = keys[Math.floor(Math.random()*keys.length)] + keys[Math.floor(Math.random()*keys.length)];
-	return '#'+code+code+code;
-};
-
-Polygonr.prototype.insertDom = function () {
-	var i, j, points, style, polygon;
-	var output = '';
-
-	for(i in this.exportData) {
-		polygon = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-
-		points = [];
-		for(j in this.exportData[i].points) {
-			points.push(this.exportData[i].points[j].x+','+this.exportData[i].points[j].y);
-		}
-		polygon.setAttribute('points', points.join(' '));
-		polygon.setAttribute('fill', this.exportData[i].style.fill);
-
-		this.svgTag.appendChild(polygon);
-	}
 };

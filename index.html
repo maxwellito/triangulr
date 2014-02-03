@@ -1,16 +1,175 @@
 <html>
 <head>
-	<title>triangulr.js - Demo page</title>
+	<!-- Head (banging?) -->
+	<title>triangulr.js</title>
+
+	<!-- Le script -->
 	<script src="triangulr.js"></script>
+
+	<!-- Le style -->
+	<style type="text/css">
+
+		/* Base style */
+		body {
+			margin: 0 0 40px;
+			font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+			font-weight: 100;
+			font-size: 24px;
+			color: #444;
+			background-color: #F9F9F9;
+		}
+		small {
+			font-weight: 100;
+		}
+		p {
+			font-size: 1em;
+		}
+		dl dt {
+			font-weight: bold;
+		}
+		dl dd {
+			margin-bottom: 14px;
+		}
+		#head {
+			height: 500px;
+		}
+		#content {
+			margin: auto;
+			max-width: 960px;
+			padding: 0 20px;
+		}
+		.smaller {
+			margin: 4px 0;
+			font-size: 0.75em;
+		}
+		
+		/* Trial styling */
+		#trial {
+			position: relative;
+			overflow: hidden;
+			margin-bottom: 14px;
+			border-radius: 10px;
+		}
+		#trial-editor, .code {
+			width: 100%;
+			margin: 0; padding: 10px;
+			border: none;
+			background-color: #eee;
+			font-size: 0.6125em;
+			font-family: monospace;
+			box-sizing: border-box;
+		}
+		#trial-button {
+			position: absolute;
+			top: 10px; right: 10px;
+			margin: 0; padding: 8px;
+			border: none; border-radius: 6px;
+			background-color: #444;
+			font-size: 16px; font-weight: bold;
+			color: #f9f9f9;
+		}
+		#trial-output {
+			height: 300px;
+		}
+	</style>
 </head>
 <body>
-	<!-- SVG to output -->
-	<svg width="800" height="500" id="wall" xmlns="http://www.w3.org/2000/svg"></svg>
-	
 
+	<!-- SVG to display -->
+	<div id="head"></div>
+	
+	<div id="content">
+		<h1>triangulr <small>a little JavaScript class</small></h1>
+		<p>Who doesn't like triangles? Nobody. Especially hipsters ;-)</p>
+		<p>After many evening trying to build nice map of trandom triangles, I realised JavaScript could help me. Nowadays, this pattern is a kind of classic, very popular and used everywhere, but long to make. So I built this little class to make things easier.</p>
+
+		<h2>What is that?</h2>
+		<p>triangulr is a little JavaScript class to build triangles walls. Completely random. In SVG: ready for HTML or Illustrator use. It give you a bit of flexibility to generate what you need: dimension, triangle size, ratio of mess and color</p>
+		
+		<h2>How to use it?</h2>
+		<p>This is pure JavaScript, no jQuery required or other libraries. Only the simple triangulr.js in your page and you're ready to go.<br>Here is an example:</p>
+		<p class="code">
+			var mySVG = new Triangulr (600, 500, 60, 0);<br>
+			document.getElementById('myDiv').appendChild(mySVG);
+		</p>
+		<p>Triangulr constructor needs these attributes:</p>
+		
+		<dl>
+			<dt>width <small>integer</small></dt>
+			<dd>width of the SVG to generate<br>use them like pixels</dd>
+			
+			<dt>height <small>integer</small></dt>
+			<dd>height of the SVG to generate<br>use them like pixels</dd>
+			
+			<dt>triangleHeight <small>integer</small></dt>
+			<dd>original triangle height<br>like before, use pixels</dd>
+			
+			<dt>pointArea <small>integer</small></dt>
+			<dd>area to place random points<br>this value is quite tricky to explain, it's the level of structure randomness (the value is relative to the triangle height)</dd>
+			
+			<dt>color <small>function (optional)</small></dt>
+			<dd>function to generate a color for each triangle<br>an object will be passed as parameter with information about the current triangle
+				<p class="smaller">
+					<strong>counter</strong> triangle number<br>
+					<strong>x</strong> column index<br>
+					<strong>y</strong> line index<br>
+					<strong>lines</strong> number of lines in the SVG<br>
+					<strong>cols</strong> number of columns in the SVG<br>
+					<strong>points</strong> array of triangle points
+				</p>
+			</dd>
+		</dl>
+
+		<h2>How it works?</h2>
+		<p>The engine is quite simple to understand, even if at the start, it looks confusing to build this random triangles.<br>To begin, we use the value given to the constructor to create a regular pattern with proper equilateral triangles. To do that, the script start by generate lines of dots. Then a second pass use these points to generate triangles, and also the color function to generate the color code.<br>Then the last pass use the data to render it in a SVG DOM object.</p>
+
+		<h2>Test it</h2>
+		<p>Here is the basic code. Break it, test it.<br>Yes, the stuff below is a little editor, don't forget to press 'update'.</p>
+		<div id="trial">
+			<textarea id="trial-editor" rows="8">var colorGenerator = function (path) {
+  var random = 32;
+  var ratio = (path.x * path.y) / (path.cols * path.lines);
+  var code = Math.floor(255 - (ratio * (255-random)) - Math.random()*random).toString(16);
+  return '#'+code+code+code;
+};
+svg = new Triangulr (960, 400, 80, 40, colorGenerator);</textarea>
+			<button id="trial-button">Update</button>
+			<div id="trial-output"></div>
+		</div>
+		
+	</div>
+
+	<!-- Le main script -->
 	<script type="text/javascript">
-		var svgTag = document.getElementById('wall');
-		new Polygonr (svgTag, 120, 70, 0);
+		// Header code
+		var headerSVG;
+		var headerContainer = document.getElementById('head');
+		var render = function(triangleId, lineId, parite, points) {
+			return triangleId % 2 == 1 ? '#070707' : Triangulr.prototype.generateGold();
+		}
+		var renderHeader = function() {
+			if (!!headerSVG) {
+				headerSVG.remove();
+			}
+			headerSVG = new Triangulr (window.innerWidth, 400, 100, 50);
+			headerContainer.appendChild(headerSVG);
+		}
+		window.onresize = renderHeader;
+		renderHeader();
+
+		// Trial code
+		var svg;
+		var output = document.getElementById('trial-output');
+		var updatr = document.getElementById('trial-button');
+		var renderTrial = function () {
+			if (!!svg) {
+				svg.remove();
+			}
+			eval(document.getElementById('trial-editor').value);
+			output.appendChild(svg);
+		};
+		updatr.addEventListener('click', renderTrial);
+		renderTrial();
 	</script>
 </body>
 </html>
