@@ -1,7 +1,7 @@
 # triangulr
 
 JavaScript class to generate maps of triangles.
-Test it on http://maxwellito.github.io/trianglr
+Test it on http://maxwellito.github.io/triangulr
 
 ## What is that?
 
