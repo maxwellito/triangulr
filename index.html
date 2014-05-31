@@ -32,6 +32,10 @@
 		dl dd {
 			margin-bottom: 14px;
 		}
+		svg {
+			width: 100%;
+			height: 100%;
+		}
 		#head {
 			height: 500px;
 		}
@@ -44,7 +48,7 @@
 			margin: 4px 0;
 			font-size: 0.75em;
 		}
-		
+
 		/* Trial styling */
 		#trial {
 			position: relative;
@@ -79,7 +83,7 @@
 
 	<!-- SVG to display -->
 	<div id="head"></div>
-	
+
 	<div id="content">
 		<h1>triangulr <small>a little JavaScript class</small></h1>
 		<p>Who doesn't like triangles? Nobody. Especially hipsters ;-)</p>
@@ -87,7 +91,7 @@
 
 		<h2>What is that?</h2>
 		<p>triangulr is a little JavaScript class to build triangles walls. Completely random. In SVG: ready for HTML or Illustrator use. It give you a bit of flexibility to generate what you need: dimension, triangle size, ratio of mess and color</p>
-		
+
 		<h2>How to use it?</h2>
 		<p>This is pure JavaScript, no jQuery required or other libraries. Only the simple triangulr.js in your page and you're ready to go.<br>Here is an example:</p>
 		<p class="code">
@@ -95,20 +99,20 @@
 			document.getElementById('myDiv').appendChild(mySVG);
 		</p>
 		<p>Triangulr constructor needs these attributes:</p>
-		
+
 		<dl>
 			<dt>width <small>integer</small></dt>
 			<dd>width of the SVG to generate<br>use them like pixels</dd>
-			
+
 			<dt>height <small>integer</small></dt>
 			<dd>height of the SVG to generate<br>use them like pixels</dd>
-			
+
 			<dt>triangleHeight <small>integer</small></dt>
 			<dd>original triangle height<br>like before, use pixels</dd>
-			
+
 			<dt>pointArea <small>integer</small></dt>
 			<dd>area to place random points<br>this value is quite tricky to explain, it's the level of structure randomness (the value is relative to the triangle height)</dd>
-			
+
 			<dt>color <small>function (optional)</small></dt>
 			<dd>function to generate a color for each triangle<br>an object will be passed as parameter with information about the current triangle
 				<p class="smaller">
@@ -138,7 +142,7 @@ svg = new Triangulr (960, 400, 80, 40, colorGenerator);</textarea>
 			<button id="trial-button">Update</button>
 			<div id="trial-output"></div>
 		</div>
-		
+
 	</div>
 
 	<!-- Le main script -->
