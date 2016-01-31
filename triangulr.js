@@ -40,6 +40,7 @@ function Triangulr (width, height, lineHeight, pointArea, renderingFunction) {
 	this.originX = - this.triangleLine;
 	this.originY = - this.lineHeight;
 	this.lines = [];
+	this.exportData = [];
 	
 	this.lineMapping();
 	this.createTriangles();
@@ -137,66 +138,27 @@ Triangulr.prototype.createTriangles = function () {
  * @return {[object]} Svg DOM object
  */
 Triangulr.prototype.generateDom = function () {
-	var i, j, points, style, polygon;
+	var i, j, data, points, style, polygon;
 	var svgTag = document.createElementNS('http://www.w3.org/2000/svg','svg');
 	var output = '';
 
 	svgTag.setAttribute('version', '1.1');
+	svgTag.setAttribute('viewBox', '0 0 ' + this.mapWidth + ' ' + this.mapHeight);
+	svgTag.setAttribute('enable-background', 'new 0 0 ' + this.mapWidth + ' ' + this.mapHeight);
+	svgTag.setAttribute('preserveAspectRatio', 'xMinYMin slice');
 
 	for(i in this.exportData) {
+		data = this.exportData[i];
 		polygon = document.createElementNS('http://www.w3.org/2000/svg','path');
 
-		points  = 'M'+this.exportData[i].points[0].x+' '+this.exportData[i].points[0].y+' ';
-		points += 'L'+this.exportData[i].points[1].x+' '+this.exportData[i].points[1].y+' ';
-		points += 'L'+this.exportData[i].points[2].x+' '+this.exportData[i].points[2].y+' Z';
+		points   = 'M' + data.points[0].x + ' ' + data.points[0].y + ' ';
+		points  += 'L' + data.points[1].x + ' ' + data.points[1].y + ' ';
+		points  += 'L' + data.points[2].x + ' ' + data.points[2].y + ' Z';
 		polygon.setAttribute('d', points);
-		polygon.setAttribute('fill', this.exportData[i].style.fill);
+		polygon.setAttribute('fill', data.style.fill);
 		polygon.setAttribute('shape-rendering', 'geometricPrecision');
 
 		svgTag.appendChild(polygon);
 	}
 	return svgTag;
-};
-
-
-// Color generators
-///////////////////////////////////////////////////////////
-
-/**
- * generateColor
- * default color generator when no function is
- * given to the constructor
- * it generate dark grey colors
- * 
- * @param  {[object]} path Info object relative to current triangle 
- * @return {[string]}      Color generated
- */
-Triangulr.prototype.generateColor = function (path) {
-	var code = Math.floor(Math.random()*5).toString(16);
-	code += Math.floor(Math.random()*16).toString(16);
-	return '#'+code+code+code;
-};
-
-/**
- * generateGold
- * color generator for gold color (from black to white)
- * this function is not use by default
- * 
- * @param  {[object]} path Info object relative to current triangle 
- * @return {[string]}      Color generated
- */
-Triangulr.prototype.generateGold = function () {
-	var goldColors = [255, 186, 0];
-	var ratio = Math.random() * 2;
-	var generated = 0;
-	for(var i in goldColors) {
-		if (ratio > 1) {
-			generated += (goldColors[i] + Math.ceil((255 - goldColors[i]) * (ratio-1))) * Math.pow(256, 2-i);
-		}
-		else {
-			generated += Math.ceil(goldColors[i] * ratio) * Math.pow(256, 2-i);
-		}
-	}
-	generated = generated.toString(16);
-	return generated.length == 5 ? '#0' + generated : '#' + generated;
 };
