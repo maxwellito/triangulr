@@ -1,0 +1,25 @@
+{
+  "name": "triangulr",
+  "version": "1.0.0",
+  "description": "JavaScript class to generate maps of triangles",
+  "main": "triangulr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxwellito/triangulr.git"
+  },
+  "keywords": [
+    "svg",
+    "triangle",
+    "map",
+    "random"
+  ],
+  "author": "maxwellito",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maxwellito/triangulr/issues"
+  },
+  "homepage": "https://github.com/maxwellito/triangulr#readme"
+}
