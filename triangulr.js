@@ -177,3 +177,19 @@ Triangulr.prototype.generateGray = function (path) {
   code += Math.floor(Math.random()*16).toString(16);
   return '#'+code+code+code;
 };
+
+// Exports
+if (typeof define === 'function' && define.amd) {
+  // AMD. Register as an anonymous module.
+  define([], function() {
+    return Triangulr;
+  });
+} else if (typeof exports === 'object') {
+  // Node. Does not work with strict CommonJS, but
+  // only CommonJS-like environments that support module.exports,
+  // like Node.
+  module.exports = Triangulr;
+} else {
+  // Browser globals
+  window.Triangulr = Triangulr;
+}
