@@ -3,6 +3,8 @@
 JavaScript class to generate maps of triangles.
 Test it on http://maxwellito.github.io/triangulr
 
+Available on NPM : `npm install triangulr`
+
 ## What is that?
 
 triangulr is a little JavaScript class to build triangles walls. Completely random. In SVG: ready for HTML or Illustrator use. It give you a bit of flexibility to generate what you need: dimension, triangle size, ratio of mess and color
