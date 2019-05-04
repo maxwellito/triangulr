@@ -1,6 +1,6 @@
 {
   "name": "triangulr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript class to generate maps of triangles",
   "main": "triangulr.js",
   "scripts": {
