@@ -48,7 +48,7 @@ function Triangulr(width, height, lineHeight, pointArea, renderingFunction) {
   this.lineMapping();
   this.createTriangles();
 
-  if (document && document.createElementNS) {
+  if (typeof document === 'object' && document.createElementNS) {
     return this.generateDom();
   }
 }
